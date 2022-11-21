@@ -1,0 +1,109 @@
+from google.colab import files
+uploaded =files.upload()
+import pandas as pd         #for data operations
+#import matplotlib.pyplot import axis
+import matplotlib.pyplot as plt  #for visualization
+df=pd.read_csv('Mall_Customers.csv')
+df
+
+#clustering algorithm
+x=df.iloc[:,3:]
+x
+plt.title('Unclustered Data')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.scatter(x['Annual Income (k$)'], x['Spending Score (1-100)'])
+
+#elbow method 
+from sklearn.cluster import KMeans, AgglomerativeClustering
+km=KMeans(n_clusters=3)
+x.shape
+km.fit_predict(x)
+km.inertia_
+sse=[]
+for k in range(1,16):
+  km=KMeans(n_clusters=k)
+  km.fit_predict(x)
+  sse.append(km.inertia_)
+sse  
+
+plt.title('Elbow Method')
+plt.xlabel('Value of K')
+plt.ylabel('SSE')
+plt.grid()
+plt.xticks(range(1,16))
+plt.plot(range(1,16), sse, marker='.',color='red')
+
+#Silhouette Method
+from sklearn.metrics import silhouette_score
+silh=[]
+for k in range(2,16):
+  km=KMeans(n_clusters=k)
+  labels=km.fit_predict(x)
+  score=silhouette_score(x, labels)
+  silh.append(score)
+silh 
+
+plt.title('Silhoutte Method')
+plt.xlabel('Value of K')
+plt.ylabel('Silhoutte Score')
+plt.grid()
+plt.xticks(range(2,16))
+plt.bar(range(2,16), silh, color='red')
+
+
+km=KMeans(n_clusters=5, random_state=0)
+labels=km.fit_predict(x)
+labels
+
+km.cluster_centers_
+
+cent=km.cluster_centers_
+
+
+plt.figure(figsize=(16,9))
+plt.subplot(1,2,1)
+plt.title('Unclustered Data')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.scatter(x['Annual Income (k$)'], x['Spending Score (1-100)'])
+
+plt.subplot(1,2,2)
+plt.title('clustered Data')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.scatter(x['Annual Income (k$)'], x['Spending Score (1-100)'],
+            c=labels)
+plt.scatter(cent[:,0], cent[:,1], s=100,color='k')
+
+km.inertia_
+
+km.labels_
+
+df[labels==4]
+#four=df[labels==4]
+#four.to_csv('mydata.csv')
+
+km.predict([[56, 61]])
+
+agl =AgglomerativeClustering(n_clusters=5)
+alabels=agl.fit_predict(x)
+alabels
+
+
+
+plt.figure(figsize=(16,9))
+plt.subplot(1,2,1)
+plt.title('Agglomerative')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.scatter(x['Annual Income (k$)'], x['Spending Score (1-100)'],
+            c=alabels)
+
+plt.subplot(1,2,2)
+plt.title('kmeans')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.scatter(x['Annual Income (k$)'], x['Spending Score (1-100)'],
+            c=labels)
+plt.scatter(cent[:,0], cent[:,1], s=100,color='k')
