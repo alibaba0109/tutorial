@@ -1,0 +1,32 @@
+   For Install- sudo apt-get install mongodb
+                sudo apt-get update
+   Start-       mongo
+   Stop -       exitsudo service mongodb stop
+
+use Assignment1
+db.createCollection("Student")
+show dbs
+db.Student.insert({ Stud_id : 20, Name : "Pratik", Percentage : 85, Status : "Present", Address : "Nashik"})
+WriteResult({ "nInserted" : 1 })
+/* 1. Display Collection */
+
+db.Student.find().pretty()
+
+/* 2. Delete Document having Status as " Absent " and Display the Remaining Documents */
+
+ db.Student.remove({ Status : "Absent"})
+WriteResult({ "nRemoved" : 6 })
+> db.Student.find().pretty()
+
+/* 3.Find the Student whose Status is "Present" AND Precentage is 85. */
+
+db.Student.find({ Status : "Present", Percentage : { $eq : 85 } } ).pretty()
+
+/* 4.Find Student whose ID is 22. */
+
+  db.Student.find({ Stud_id : {$eq : 22} }).pretty()
+
+/* 5. Find whose Status is "Absent" OR Precentage is 70. */
+
+db.Student.find({ $or : [ { Status : "Absent" },{Percentage : { $eq : 70 } } ] } ).pretty()
+

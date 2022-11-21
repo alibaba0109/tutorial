@@ -1,0 +1,76 @@
+   For Install- sudo apt-get install mongodb
+                sudo apt-get update
+   Start-       mongo
+   Stop -       exitsudo service mongodb stop
+use Student
+db.Student_Details.insert({Stud_id:1,Stud_name:"Mitali",Status:"PASS",Stud_add:"Nasik",DOA:new Date("2015-06-23")})
+WriteResult({ "nInserted" : 1 })
+db.Student_Details.drop()
+db.Student_Details.insert({Stud_id:1,Stud_name:"Mitali",Marks:67,Status:"PASS",Stud_add:"Nasik",DOA:new Date("2015-06-23")})
+WriteResult({ "nInserted" : 1 })
+
+//display
+db.Student_Details.find().pretty()
+
+//find student having marks>65
+db.Student_Details.find({Marks:{$gt:65}}).pretty()
+
+//Student having marks=65 and Status=PASS
+db.Student_Details.find({ $and: [ {Marks:65},{Status:"PASS"}]}).pretty()
+
+//Student whose roll_no is 12
+db.Student_Details.find({Stud_id:12}).pretty()
+
+//Student whose score is 30 or Status is fail
+db.Student_Details.find({ $or: [ {Marks:30},{Status:"FAIL"}]}).pretty()
+
+//Asending order
+db.Student_Details.find().sort({Stud_id:1}).pretty()
+
+//desending order
+db.Student_Details.find().sort({Stud_id:-1}).pretty()
+
+//count of students
+db.Student_Details.find().count()
+
+//Students who live in pune or nasik
+db.Student_Details.find({ $or: [ {Stud_add:"Nasik"},{Stud_add:"Pune"}]}).pretty()
+
+//Student whose status is pass
+db.Student_Details.find({Status:"PASS"}).pretty()
+
+//Students whose status is fail
+ db.Student_Details.find({Status:"FAIL"}).pretty()
+
+//Update staus PASS to FAIL
+db.Student_Details.updateMany({Status:"PASS"},{$set:{Status:"FAIL"}})
+{ "acknowledged" : true, "matchedCount" : 7, "modifiedCount" : 7 }
+
+db.Student_Details.find().pretty()
+
+
+//Delete document of student having roll n0 12
+db.Student_Details.remove({Stud_id:12})
+WriteResult({ "nRemoved" : 1 })
+db.Student_Details.find().pretty()
+
+//display first 6 documents
+> db.Student_Details.find().limit(6).pretty()
+
+//skip first 6 documents
+> db.Student_Details.find().skip(6).pretty()
+
+//Last admitted student
+> db.Student_Details.aggregate([ { "$group":{ "_id":null, "Last_Addmited":{"$max": "$DOA"} }} ])
+
+> db.Student_Details.distinct("Stud_add");
+
+
+> db.Student_Det.ensureIndex({Stud_id:1},{collation:{locale:"fr"}})
+
+
+
+
+
+
+

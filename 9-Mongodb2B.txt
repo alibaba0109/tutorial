@@ -1,0 +1,27 @@
+  For Install- sudo apt-get install mongodb
+                sudo apt-get update
+   Start-       mongo
+   Stop -       exitsudo service mongodb stop
+
+use Student
+switched to db Student
+
+//create collection and insert
+db.Student_Details.insert({Roll_no:1,Stud_name:"Mitali",Age:19,Branch:"Comp",Addr:["Nashik","Maharashtra"],Hobby:["Cricket"]})
+WriteResult({ "nInserted" : 1 })
+
+//Display all documents
+ db.Student_Details.find().pretty()
+
+//Dispaly student info sorted on name field
+ db.Student_Details.aggregate({$sort:{Stud_name:1}}).pretty()
+
+//remove document with Roll_no 10
+db.Student_Details.remove({Roll_no:10})
+WriteResult({ "nRemoved" : 1 })
+db.Student_Details.find().pretty()
+
+//Display student whose name start with 'A'
+db.Student_Details.find({Stud_name:{$regex:/^a/i}}).pretty()
+
+
