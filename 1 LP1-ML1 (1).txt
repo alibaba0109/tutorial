@@ -1,56 +1,57 @@
-﻿from google.colab import files 
-uploaded = files.upload()
-import pandas as pd
+﻿from google.colab import files
+uploded=files.upload()
+ 
+import pandas as pd  
 import numpy as np
 import matplotlib.pyplot as plt
-
+ 
 df=pd.read_csv("Heart.csv")
-
+ 
 #a) find shape of the data
 print("The shape of data (rows and coloumn) in given dataset are:", df.shape)
-
+ 
 #b)Find Missing Values
 print("The Missing Values in given dataset are:", df.isnull().sum())
-
+ 
 #c)Find the datatype of each column
 print("datatype of each column", df.dtypes)
-
+ 
 #d)Finding out zero's
 print("Zero's value in given dataset:", df[df == 0].count())
-
+ 
 #e)Mean age of patient
 print("Mean age of patient:", df['Age'].mean())
-
+ 
 #f)Extract only Age, Sex, ChestPain, RestBP and Cholesterol. Randomly divide dataset in 
 #training (75%) and testing (25%).
 print("Extract Age, Sex, ChestPain, RestBP, Chol.")
 newdf = df[['Age','Sex','ChestPain','RestBP','Chol']]
 print(newdf)
-
-from sklearn.model_selection import train_test_split 
+ 
 #train_test_split is a method used for spliting the dataset into training and testing dataset
+#cross validation
+from sklearn.model_selection import train_test_split 
 train, test = train_test_split(df, random_state=0,test_size=0.25)
-print("Training dataset:",train.shape)
-print("Testing dataset:",test.shape)
-
+print("training dataset:",train.shape)
+ 
 actual=list(np.ones(45))+list(np.zeros(55))
 print(actual)
-
 predicted=list(np.ones(40))+list(np.zeros(52))+list(np.ones(8))
 print(predicted)
+ 
+from sklearn.metrics import ConfusionMatrixDisplay 
+ConfusionMatrixDisplay.from_predictions(actual, predicted)
+ 
+from sklearn.metrics import accuracy_score
+print("accuracy",accuracy_score(actual,predicted))
+ 
+from sklearn.metrics import precision_score
+print("f1 score",precision_score(actual,predicted))
+ 
+from sklearn.metrics import f1_score
+print("precision",f1_score(actual,predicted))
+ 
+from sklearn.metrics import classification_report
+print(classification_report(actual, predicted))
 
-from sklearn.metrics import ConfusionMatrixDisplay
-ConfusionMatrixDisplay.from_predictions(actual,predicted)
-
-from sklearn.metrics import accuracy_score
-print("Accuracy:",accuracy_score (actual,predicted))
-
-from sklearn.metrics import precision_score
-print("Precision:",precision_score (actual,predicted))
-
-from sklearn.metrics import recall_score
-print("Recall:",recall_score (actual,predicted))
-
-from sklearn.metrics import f1_score
-print("F1 score:",f1_score (actual,predicted))
 
